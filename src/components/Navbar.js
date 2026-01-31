@@ -1,13 +1,13 @@
 import React from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';  
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   let location = useLocation();
-  const navigate = useNavigate();   
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('token');   
-    navigate('/login');                 
+    localStorage.removeItem('token');
+    navigate('/login', { replace: true });   // 👈 safe redirect
   };
 
   return (
@@ -29,8 +29,7 @@ const Navbar = () => {
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <Link
-                className={`nav-link ${location.pathname === "/" ? "active" : ""}`}
-                aria-current="page"
+                className={`nav-link ${location.hash === "#/" ? "active" : ""}`}
                 to="/"
               >
                 Home
@@ -38,7 +37,7 @@ const Navbar = () => {
             </li>
             <li className="nav-item">
               <Link
-                className={`nav-link ${location.pathname === "/about" ? "active" : ""}`}
+                className={`nav-link ${location.hash === "#/about" ? "active" : ""}`}
                 to="/about"
               >
                 About
@@ -46,7 +45,6 @@ const Navbar = () => {
             </li>
           </ul>
 
-          {/* 👇 Conditional rendering */}
           {!localStorage.getItem('token') ? (
             <form className="d-flex">
               <Link className="btn btn-primary mx-1" to="/login" role="button">Login</Link>
